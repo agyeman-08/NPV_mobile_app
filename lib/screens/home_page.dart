@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:yolo/screens/input_page.dart';
 
 import 'package:yolo/widgets/activity_card.dart';
 import 'package:yolo/widgets/drawer.dart';
@@ -113,9 +114,20 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 20),
                 // Input
-                const ActivityCard(
-                  icon: Icons.keyboard,
-                  text: 'Input',
+                GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const InputPage();
+                        },
+                      ),
+                    );
+                  },
+                  child: const ActivityCard(
+                    icon: Icons.keyboard,
+                    text: 'Input',
+                  ),
                 ),
               ],
             )

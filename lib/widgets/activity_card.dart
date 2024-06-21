@@ -30,7 +30,7 @@ class ActivityCard extends StatelessWidget {
           text,
           textAlign: TextAlign.center,
           style: const TextStyle(
-            color: Colors.black,
+            // color: Colors.black,
             fontSize: 18,
           ),
         ),

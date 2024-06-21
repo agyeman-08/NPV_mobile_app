@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:yolo/commons/utils/firebase_methods.dart';
 import 'package:yolo/screens/login.dart';
+import 'package:yolo/theme.dart';
+import 'package:yolo/theme_notifier.dart';
 
 class SideDrawer extends StatefulWidget {
   const SideDrawer({super.key});
@@ -16,10 +19,12 @@ class _SideDrawerState extends State<SideDrawer> {
     "item3",
   ];
   String selectedItem = "item1";
-  bool isDarkMode = false;
+  // bool isDarkMode = false;
   Authentication authentication = Authentication();
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider =
+        Provider.of<ThemeProvider>(context, listen: false);
     return Drawer(
       child: SafeArea(
         child: Padding(
@@ -86,15 +91,11 @@ class _SideDrawerState extends State<SideDrawer> {
                           children: [
                             Text(
                               "Nana Agyiman",
-                              style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold),
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(
                               "apex@mail.com",
-                              style: TextStyle(
-                                  color: Colors.grey,
-                                  fontWeight: FontWeight.w700),
+                              style: TextStyle(fontWeight: FontWeight.w700),
                             )
                           ],
                         ),
@@ -180,14 +181,21 @@ class _SideDrawerState extends State<SideDrawer> {
                               fontSize: 15, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      Switch.adaptive(
-                          activeColor: Colors.grey,
-                          value: isDarkMode,
-                          onChanged: (value) {
-                            setState(() {
-                              isDarkMode = value;
-                            });
-                          })
+                      IconButton(
+                        onPressed: () {
+                          themeProvider.changeTheme();
+                          setState(() {});
+                        },
+                        icon: themeProvider.getTheme == darkTheme
+                            ? const Icon(Icons.dark_mode)
+                            : const Icon(Icons.light_mode),
+                      )
+                      // Switch.adaptive(
+                      //     activeColor: Colors.grey,
+                      //     value: themeProvider.getTheme == darkTheme,
+                      //     onChanged: (value) {
+                      //       themeProvider.changeTheme();
+                      //     })
                     ],
                   ),
                   TextButton(

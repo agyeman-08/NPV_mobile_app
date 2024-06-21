@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 import 'package:yolo/screens/input_page.dart';
+import 'package:yolo/theme_notifier.dart';
 
 import 'package:yolo/widgets/activity_card.dart';
 import 'package:yolo/widgets/drawer.dart';
@@ -27,11 +29,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    ThemeProvider themeProvider =
+        Provider.of<ThemeProvider>(context, listen: false);
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-      ),
+      // backgroundColor: Colors.white,
+      appBar: AppBar(),
       drawer: const SideDrawer(),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 18),
@@ -49,7 +52,6 @@ class _HomePageState extends State<HomePage> {
                       "Welcome back",
                       style: TextStyle(
                         fontSize: 25,
-                        color: Colors.black,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -78,7 +80,6 @@ class _HomePageState extends State<HomePage> {
               'Select an activity',
               style: TextStyle(
                 fontSize: 25,
-                color: Colors.black,
                 fontWeight: FontWeight.w300,
               ),
             ),

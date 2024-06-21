@@ -1,7 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class PlateInfoView extends StatelessWidget {
   const PlateInfoView({super.key});
+  Future<Map<String, dynamic>> _fetchDetails() async {
+    User? user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      throw Exception("User not logged in");
+    }
+
+    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+        .collection('Number Plate')
+        .where('user_ID', isEqualTo: user.uid)
+        .orderBy('timestamp', descending: true)
+        .limit(1)
+        .get();
+
+    if (querySnapshot.docs.isEmpty) {
+      throw Exception("No details found for the current user");
+    }
+
+    DocumentSnapshot doc = querySnapshot.docs.first;
+    return doc.data() as Map<String, dynamic>;
+  }
+
   @override
   Widget build(BuildContext context) {
     List<String> labels = [

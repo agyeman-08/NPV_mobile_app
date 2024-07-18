@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:yolo/widgets/enter_plate_textfield.dart';
+import 'package:yolo/widgets/validate_plate_button.dart';
 
 class PlateInfoView extends StatelessWidget {
   const PlateInfoView({super.key});
+
   Future<Map<String, dynamic>> _fetchDetails() async {
     User? user = FirebaseAuth.instance.currentUser;
     if (user == null) {
@@ -27,6 +30,7 @@ class PlateInfoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final plateController = TextEditingController();
     List<String> labels = [
       'Name',
       'Date of Birth',
@@ -53,6 +57,11 @@ class PlateInfoView extends StatelessWidget {
       'Range Rover Velar 2025',
     ];
 
+    void validatePlate() {
+      print('validate');
+      // Validate and fetch plate details
+    }
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Plate Information'),
@@ -68,26 +77,32 @@ class PlateInfoView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: Column(
             children: [
-              Container(
-                width: 240,
-                decoration: const BoxDecoration(
-                  color: Color(0xffbfbfbe),
-                  borderRadius: BorderRadius.all(Radius.circular(18)),
-                ),
-                child: const Center(
-                  child: Padding(
-                    padding: EdgeInsets.symmetric(vertical: 18),
-                    child: Text(
-                      'AR - 0000 - 24',
-                      style: TextStyle(
-                        fontSize: 20,
-                        color: Color(0xFFfffefe),
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                  ),
-                ),
+              // Container(
+              //   width: 240,
+              //   decoration: const BoxDecoration(
+              //     color: Color(0xffbfbfbe),
+              //     borderRadius: BorderRadius.all(Radius.circular(18)),
+              //   ),
+              //   child: const Center(
+              //     child: Padding(
+              //       padding: EdgeInsets.symmetric(vertical: 18),
+              //       child:
+              //       Text(
+              //         'AR - 0000 - 24',
+              //         style: TextStyle(
+              //           fontSize: 20,
+              //           color: Color(0xFFfffefe),
+              //           fontWeight: FontWeight.w500,
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              EnterPlateTextField(
+                controller: plateController,
               ),
+              const SizedBox(height: 20),
+              ValidatePlateButton(onPressed: validatePlate),
               const SizedBox(height: 20),
               Expanded(
                 child: SizedBox(

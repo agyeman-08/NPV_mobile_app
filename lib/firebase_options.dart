@@ -53,10 +53,12 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyB68FbjBiJq-Cysh5DHyK4eETqIgUgC0ag',
-    appId: '1:306258508499:android:e5fe60fe93ba5099b07226',
-    messagingSenderId: '306258508499',
-    projectId: 'yolo-fb5dd',
-    storageBucket: 'yolo-fb5dd.appspot.com',
+    apiKey: 'AIzaSyBNODJoTU6EDbcoYJ_xS_d7XNaIcaYYYyg',
+    appId: '1:4342042979:android:4ceaa78a7337a05d918356',
+    messagingSenderId: '4342042979',
+    projectId: 'npv-mobile-dev',
+    databaseURL: 'https://npv-mobile-dev-default-rtdb.firebaseio.com',
+    storageBucket: 'npv-mobile-dev.appspot.com',
   );
+
 }

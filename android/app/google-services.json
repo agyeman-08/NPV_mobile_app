@@ -1,26 +1,37 @@
 {
   "project_info": {
-    "project_number": "306258508499",
-    "project_id": "yolo-fb5dd",
-    "storage_bucket": "yolo-fb5dd.appspot.com"
+    "project_number": "4342042979",
+    "firebase_url": "https://npv-mobile-dev-default-rtdb.firebaseio.com",
+    "project_id": "npv-mobile-dev",
+    "storage_bucket": "npv-mobile-dev.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:306258508499:android:e5fe60fe93ba5099b07226",
+        "mobilesdk_app_id": "1:4342042979:android:4ceaa78a7337a05d918356",
         "android_client_info": {
           "package_name": "com.example.yolo"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "4342042979-m23pd8n98n10bne6rhkh9cip09fuvjju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyB68FbjBiJq-Cysh5DHyK4eETqIgUgC0ag"
+          "current_key": "AIzaSyBNODJoTU6EDbcoYJ_xS_d7XNaIcaYYYyg"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "4342042979-m23pd8n98n10bne6rhkh9cip09fuvjju.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 
 class EnterPlateTextField extends StatelessWidget {
   final TextEditingController controller;
+  final FocusNode focusNode;
   const EnterPlateTextField({
     super.key,
     required this.controller,
+    required this.focusNode,
   });
 
   @override
@@ -14,6 +16,7 @@ class EnterPlateTextField extends StatelessWidget {
       child: TextField(
         textAlign: TextAlign.center,
         controller: controller,
+        focusNode: focusNode,
         decoration: const InputDecoration(
           hintText: "AR-0000-24",
           border: OutlineInputBorder(

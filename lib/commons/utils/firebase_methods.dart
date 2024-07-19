@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:yolo/commons/utils/models/plate_model.dart';
 import "./models/user_model.dart";
 
 class Authentication {
@@ -82,5 +83,32 @@ class Authentication {
 
   signOut() {
     _auth.signOut();
+  }
+}
+
+class FirebaseCRUD {
+  final FirebaseFirestore instance = FirebaseFirestore.instance;
+
+  // fetch data from firestore where doc == plateNumber
+  Future<Map<String, dynamic>> fetchPlateData(String plateNumber) async {
+    Map<String, dynamic> data = {};
+    try {
+      DocumentSnapshot snapshot =
+          await instance.collection('Number Plate').doc(plateNumber).get();
+      data = snapshot.data() as Map<String, dynamic>;
+    } catch (err) {
+      debugPrint(err.toString());
+    }
+    return data;
+  }
+
+  Stream<List<PlateModel>> fetchPlateDetails(String docName) {
+    return instance.collection('Number Plate').doc(docName).snapshots().map(
+          (snapshot) => snapshot
+              .data()!
+              .entries
+              .map((entry) => PlateModel.fromMap(entry.value))
+              .toList(),
+        );
   }
 }

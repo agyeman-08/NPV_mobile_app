@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:yolo/commons/utils/firebase_methods.dart';
 import 'package:yolo/widgets/enter_plate_textfield.dart';
 import 'package:yolo/widgets/validate_plate_button.dart';
 
@@ -30,7 +31,8 @@ class PlateInfoView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final plateController = TextEditingController();
+    final TextEditingController plateController = TextEditingController();
+    final FocusNode plateFocusNode = FocusNode();
     List<String> labels = [
       'Name',
       'Date of Birth',
@@ -57,9 +59,30 @@ class PlateInfoView extends StatelessWidget {
       'Range Rover Velar 2025',
     ];
 
-    void validatePlate() {
-      print('validate');
-      // Validate and fetch plate details
+    void validatePlate() async {
+      final plateNumber = plateController.text.trim();
+      if (plateNumber.isEmpty) {
+        // Show an error message if the plate number is empty
+        print('Please enter a plate number');
+        return;
+      }
+
+      try {
+        DocumentSnapshot doc = await FirebaseFirestore.instance
+            .collection('Number Plate')
+            .doc(plateNumber)
+            .get();
+
+        if (!doc.exists) {
+          print('No details found for the entered plate number');
+        } else {
+          // Display the fetched data
+          print('Document data: ${doc.data()}');
+          // You can also set the state to update the UI with the fetched data
+        }
+      } catch (e) {
+        print('Error fetching details: $e');
+      }
     }
 
     return Scaffold(
@@ -69,74 +92,189 @@ class PlateInfoView extends StatelessWidget {
         backgroundColor: const Color(0xFFfffefe),
         elevation: 0,
       ),
-      body: Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: const Color(0xFFfffefe),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18),
-          child: Column(
-            children: [
-              // Container(
-              //   width: 240,
-              //   decoration: const BoxDecoration(
-              //     color: Color(0xffbfbfbe),
-              //     borderRadius: BorderRadius.all(Radius.circular(18)),
-              //   ),
-              //   child: const Center(
-              //     child: Padding(
-              //       padding: EdgeInsets.symmetric(vertical: 18),
-              //       child:
-              //       Text(
-              //         'AR - 0000 - 24',
-              //         style: TextStyle(
-              //           fontSize: 20,
-              //           color: Color(0xFFfffefe),
-              //           fontWeight: FontWeight.w500,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
-              EnterPlateTextField(
-                controller: plateController,
-              ),
-              const SizedBox(height: 20),
-              ValidatePlateButton(onPressed: validatePlate),
-              const SizedBox(height: 20),
-              Expanded(
-                child: SizedBox(
-                  width: double.infinity,
-                  child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: labels.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 18),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+      body: GestureDetector(
+        onTap: () {
+          plateFocusNode.unfocus();
+        },
+        child: Container(
+          width: double.infinity,
+          height: double.infinity,
+          color: const Color(0xFFfffefe),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: Column(
+              children: [
+                // Container(
+                //   width: 240,
+                //   decoration: const BoxDecoration(
+                //     color: Color(0xffbfbfbe),
+                //     borderRadius: BorderRadius.all(Radius.circular(18)),
+                //   ),
+                //   child: const Center(
+                //     child: Padding(
+                //       padding: EdgeInsets.symmetric(vertical: 18),
+                //       child:
+                //       Text(
+                //         'AR - 0000 - 24',
+                //         style: TextStyle(
+                //           fontSize: 20,
+                //           color: Color(0xFFfffefe),
+                //           fontWeight: FontWeight.w500,
+                //         ),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // EnterPlateTextField(
+                //   controller: plateController,
+                //   focusNode: plateFocusNode,
+                // ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 100),
+                  child: TextFormField(
+                    textAlign: TextAlign.center,
+                    controller: plateController,
+                    focusNode: plateFocusNode,
+                    decoration: const InputDecoration(
+                      hintText: "AR-0000-24",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(15),
+                        ),
+                      ),
+                    ),
+                    onChanged: (value) {
+                      plateController.text = value.toUpperCase();
+                    },
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ValidatePlateButton(onPressed: validatePlate),
+                const SizedBox(height: 20),
+
+                Expanded(
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: plateController.text.trim() == null
+                        ? null
+                        : FirebaseFirestore.instance
+                            .collection('Number Plate')
+                            .where('Plate Number',
+                                isEqualTo: plateController.text.trim())
+                            .snapshots(),
+                    builder: (context, snapshot) {
+                      if (!snapshot.hasData) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else if (snapshot.data!.docs.isEmpty) {
+                        return const Center(
+                          child: Text('No details found for this plate number'),
+                        );
+                      } else {
+                        final doc = snapshot.data!.docs.first;
+                        return ListView(
                           children: [
                             Text(
-                              labels[index],
+                              'Name: ${doc['Name']}',
                               style: const TextStyle(
                                 fontSize: 14,
                               ),
                             ),
                             Text(
-                              values[index],
+                              'Date of Birth: ${doc['Date of Birth']}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              'Address: ${doc['Address']}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              'Contact: ${doc['Contact']}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              'License Number: ${doc['License Number']}',
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                               ),
                             ),
+                            Text(
+                              'Class of License: ${doc['Class of License']}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              'Date of Issue: ${doc['Date of Issue']}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              'Expiry Date: ${doc['Expiry Date']}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              'Nationality: ${doc['Nationality']}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                            Text(
+                              'Model of the Car: ${doc['Model of the Car']}',
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
                           ],
-                        ),
-                      );
+                        );
+                      }
                     },
                   ),
                 ),
-              ),
-            ],
+                // Expanded(
+                //   child: SizedBox(
+                //     width: double.infinity,
+                //     child: ListView.builder(
+                //       shrinkWrap: true,
+                //       itemCount: labels.length,
+                //       itemBuilder: (context, index) {
+                //         return Padding(
+                //           padding: const EdgeInsets.only(bottom: 18),
+                //           child: Column(
+                //             crossAxisAlignment: CrossAxisAlignment.start,
+                //             children: [
+                //               Text(
+                //                 labels[index],
+                //                 style: const TextStyle(
+                //                   fontSize: 14,
+                //                 ),
+                //               ),
+                //               Text(
+                //                 values[index],
+                //                 style: const TextStyle(
+                //                   fontSize: 16,
+                //                   fontWeight: FontWeight.w500,
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         );
+                //       },
+                //     ),
+                //   ),
+                // ),
+              ],
+            ),
           ),
         ),
       ),

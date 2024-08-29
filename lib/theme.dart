@@ -1,5 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:yolo/widgets/theme/dark_theme.dart';
+import 'package:yolo/widgets/theme/light.dart';
 
-ThemeData lightTheme = ThemeData(brightness: Brightness.light);
+class ThemeProvider extends ChangeNotifier {
+  late ThemeData _selectedTheme;
+  late SharedPreferences pref;
+  ThemeProvider({bool isDark = false}) {
+    _selectedTheme = isDark ? darkTheme : lightTheme;
+  }
 
-ThemeData darkTheme = ThemeData(brightness: Brightness.dark);
+  ThemeData get getTheme => _selectedTheme;
+
+  Future<void> changeTheme() async {
+    pref = await SharedPreferences.getInstance();
+
+    if (_selectedTheme == darkTheme) {
+      _selectedTheme = lightTheme;
+      await pref.setBool("isDark", false);
+    } else {
+      _selectedTheme = darkTheme;
+      await pref.setBool("isDark", true);
+    }
+    notifyListeners();
+  }
+}

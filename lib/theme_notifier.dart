@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:yolo/theme.dart';
 
+import 'widgets/theme/dark_theme.dart';
+import 'widgets/theme/light.dart';
+
 class ThemeProvider extends ChangeNotifier {
   late ThemeData _selectedTheme;
   late SharedPreferences pref;

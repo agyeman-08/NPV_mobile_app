@@ -1,10 +1,10 @@
-import 'dart:async';
-
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'package:yolo/theme_notifier.dart';
 import 'package:yolo/widgets/enter_plate_textfield.dart';
-import 'package:yolo/widgets/validate_plate_button.dart';
 
 class PlateInfoView extends StatefulWidget {
   const PlateInfoView({super.key});
@@ -51,7 +51,7 @@ class _PlateInfoViewState extends State<PlateInfoView> {
       'Date of Issue',
       'Expiry Date',
       'Nationality',
-      'Model',
+      'Model of the Car'
     ];
 
     List<String> values = [
@@ -73,25 +73,48 @@ class _PlateInfoViewState extends State<PlateInfoView> {
     }
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Plate Information'),
-        centerTitle: true,
-        backgroundColor: const Color(0xFFfffefe),
-        elevation: 0,
-      ),
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        color: const Color(0xFFfffefe),
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 18),
           child: Column(
             children: [
+              Container(
+                  padding: EdgeInsets.only(top: 40.0),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        left: -18,
+                        top: -5,
+                        child: IconButton(
+                          icon: const Icon(Icons.arrow_back_ios_new_outlined),
+                          onPressed: () {
+                            // Handle the back button action
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ),
+                      Center(
+                        child: Text(
+                          'Plate Information',
+                          style: TextStyle(
+                            fontSize: 21, // Your preferred font size
+                            fontWeight: FontWeight.bold,
+                            color: Theme.of(context)
+                                .colorScheme
+                                .primary, // Your preferred color
+                          ),
+                        ),
+                      ),
+                    ],
+                  )),
+              const SizedBox(height: 20),
               EnterPlateTextField(
                 controller: plateController,
               ),
               const SizedBox(height: 20),
-              TextButton(
+              ElevatedButton(
                   style: ButtonStyle(
                     foregroundColor:
                         MaterialStateProperty.all<Color>(Colors.blue),
@@ -109,7 +132,14 @@ class _PlateInfoViewState extends State<PlateInfoView> {
                   onPressed: () {
                     _fetchDetails();
                   },
-                  child: Text('TextButton')),
+                  child: const Text(
+                    'Validate',
+                    style: TextStyle(
+                        color: Colors.greenAccent,
+                        fontFamily: 'Poppins',
+                        fontSize: 21,
+                        fontWeight: FontWeight.bold),
+                  )),
               const SizedBox(height: 20),
               Expanded(
                 child: SizedBox(
@@ -125,16 +155,16 @@ class _PlateInfoViewState extends State<PlateInfoView> {
                           children: [
                             Text(
                               labels[index],
-                              style: const TextStyle(
-                                fontSize: 14,
-                              ),
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  color: Theme.of(context).colorScheme.primary),
                             ),
                             Text(
                               vehicleDetail?[labels[index]] ?? values[index],
-                              style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                              ),
+                              style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                  color: Theme.of(context).colorScheme.primary),
                             ),
                           ],
                         ),

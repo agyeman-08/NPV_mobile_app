@@ -8,12 +8,12 @@ import 'package:provider/provider.dart';
 import 'package:yolo/commons/utils/firebase_methods.dart';
 import 'package:yolo/screens/home_page.dart';
 import 'package:yolo/screens/login.dart';
-import 'package:yolo/theme.dart';
 import 'package:yolo/theme_notifier.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 import '../screens/help_page.dart';
 import '../screens/history_page.dart';
+import 'theme/dark_theme.dart';
 
 class SideDrawer extends StatefulWidget {
   const SideDrawer({super.key});

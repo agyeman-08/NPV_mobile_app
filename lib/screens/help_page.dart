@@ -152,10 +152,14 @@ class HelpAndFeedbackScreen extends StatelessWidget {
                   maxLines: 6,
                   decoration: InputDecoration.collapsed(
                     hintText: 'Tell us what you think',
+                    hintStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                    fillColor: Theme.of(context).colorScheme.surface,
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               // Submit Button
               Center(
                 child: ElevatedButton(

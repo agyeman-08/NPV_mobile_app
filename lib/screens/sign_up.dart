@@ -151,38 +151,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       hintText: 'Password',
                     ),
                     const SizedBox(height: 20),
-                    const Padding(
-                      padding: EdgeInsets.only(left: -5.0),
-                      child: Text('Password must include:',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white)),
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: -5.0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            '• An uppercase letter',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            '• A number',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            '• A special character',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                          Text(
-                            '• At least 8 characters',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ],
-                      ),
-                    ),
-
                     CustomTextField(
                       icon: const Icon(Icons.lock),
                       controller: confirmpasswordController,

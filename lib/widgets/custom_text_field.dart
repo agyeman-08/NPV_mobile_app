@@ -5,8 +5,12 @@ class CustomTextField extends StatefulWidget {
   final String hintText;
   final Icon icon;
   final bool isPass;
-  final String? errorText; // Add this line
+  final String? errorText;
   final FormFieldValidator<String>? validator;
+  final Color borderColor; // Added this line
+  final Color hintTextColor; // Added this line
+  final Color iconColor; // Added this line
+  final Color fillColor; // Added this line
 
   const CustomTextField({
     super.key,
@@ -14,8 +18,12 @@ class CustomTextField extends StatefulWidget {
     this.isPass = false,
     required this.controller,
     required this.hintText,
-    this.errorText, // Add this line
+    this.errorText,
     this.validator,
+    this.borderColor = Colors.grey, // Default border color
+    this.hintTextColor = Colors.black, // Default hint text color
+    this.iconColor = Colors.black, // Default icon color
+    this.fillColor = Colors.grey, // Default fill color
   });
 
   @override
@@ -28,12 +36,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      // Change from TextField to TextFormField
       controller: widget.controller,
       decoration: InputDecoration(
-        prefixIcon: widget.icon,
+        prefixIcon: Icon(
+          widget.icon.icon,
+          color: widget.iconColor, // Updated this line
+        ),
         hintText: widget.hintText,
+        hintStyle: TextStyle(color: widget.hintTextColor), // Updated this line
         border: OutlineInputBorder(
+          borderSide:
+              BorderSide(color: widget.borderColor), // Updated this line
           borderRadius: BorderRadius.circular(10),
         ),
         filled: true,
@@ -44,17 +57,21 @@ class _CustomTextFieldState extends State<CustomTextField> {
                     isHidden = !isHidden;
                   });
                 },
-                icon: isHidden
-                    ? const Icon(Icons.visibility_sharp)
-                    : const Icon(Icons.visibility_off_sharp))
+                icon: Icon(
+                  isHidden
+                      ? Icons.visibility_sharp
+                      : Icons.visibility_off_sharp,
+                  color: widget.iconColor, // Updated this line
+                ),
+              )
             : Container(
                 width: 0,
               ),
-        fillColor: Colors.grey[200],
-        errorText: widget.errorText, // Add this line
+        fillColor: widget.fillColor, // Updated this line
+        errorText: widget.errorText,
       ),
       obscureText: widget.isPass ? isHidden : false,
-      validator: widget.validator, // Add this line
+      validator: widget.validator,
     );
   }
 }

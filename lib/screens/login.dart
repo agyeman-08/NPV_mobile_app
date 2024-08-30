@@ -1,9 +1,5 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:yolo/commons/utils/firebase_methods.dart';
 import 'package:yolo/screens/home_page.dart';
 import 'package:yolo/screens/sign_up.dart';
@@ -21,6 +17,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
   final TextEditingController emailController = TextEditingController();
+
   final TextEditingController passwordController = TextEditingController();
   final Authentication authentication = Authentication();
   login({required BuildContext ctx}) async {
@@ -54,9 +51,9 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        // const BoxImageDecoration(
-        //   imageUrl: "assets/images/car_my.jpg",
-        // ),
+        const BoxImageDecoration(
+          imageUrl: "assets/images/car_my.jpg",
+        ),
         Scaffold(
           appBar: AppBar(
             iconTheme: const IconThemeData(color: Colors.white),
@@ -84,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                       'Login to your account',
                       style: TextStyle(
                         fontSize: 18,
-                        color: Colors.grey[300],
+                        color: Colors.black54,
                       ),
                     ),
                     const SizedBox(height: 50),
@@ -103,48 +100,14 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 40),
                     CustomElevatedButton(
                       onPressed: () => login(ctx: context),
+                      // Add login logic here
+
                       label: isLoading ? "Loading....." : 'Login',
                       width: double.infinity,
                       height: 50,
-                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      backgroundColor: Colors.transparent,
                     ),
                     const SizedBox(height: 20),
-                    Padding(
-                      padding: EdgeInsets.only(top: 45.h),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          GestureDetector(
-                            child: SizedBox(
-                              height: 60.h,
-                              width: 60.w,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10.r),
-                                child: const BoxImageDecoration(
-                                  imageUrl: 'assets/images/applogo.jpg',
-                                ),
-                              ),
-                            ),
-                            // onTap: federateGoogleLogin,
-                          ),
-                          GestureDetector(
-                            child: SizedBox(
-                              height: 60.h,
-                              width: 60.w,
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(10.r),
-                                child: BoxImageDecoration(
-                                  imageUrl: 'assets/images/google.jpeg',
-                                ),
-                              ),
-                            ),
-                            onTap: federateGoogleLogin,
-                          ),
-                        ],
-                      ),
-                    ),
-
-                    const SizedBox(height: 70),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -175,48 +138,5 @@ class _LoginPageState extends State<LoginPage> {
         )
       ],
     );
-  }
-
-  Future<void> federateGoogleLogin() async {
-    try {
-      final UserCredential userCredential = await signInWithGoogle();
-      if (userCredential.user != null) {
-        final FirebaseAuth _auth = FirebaseAuth.instance;
-        User? user = _auth.currentUser;
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(user!.uid)
-            .set({
-          'full_name': user.displayName,
-          'email': user.email,
-          'uid': user.uid,
-        });
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('No User is found')),
-        );
-      }
-    } catch (err) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Sign-in error: $err')),
-      );
-    }
-  }
-
-  Future<UserCredential> signInWithGoogle() async {
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication? googleAuth =
-        await googleUser?.authentication;
-
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    return await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }

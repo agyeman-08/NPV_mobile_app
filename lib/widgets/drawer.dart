@@ -190,11 +190,11 @@ class _SideDrawerState extends State<SideDrawer> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Nana Agyiman",
+                              "Nana Agyeman",
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              "apex@mail.com",
+                              "agyeman@gmail.com",
                               style: TextStyle(fontWeight: FontWeight.w700),
                             )
                           ],

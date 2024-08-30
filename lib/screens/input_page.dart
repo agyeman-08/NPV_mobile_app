@@ -51,11 +51,11 @@ class _PlateInfoViewState extends State<PlateInfoView> {
       'Date of Issue',
       'Expiry Date',
       'Nationality',
-      'Model of the Car'
+      'Model'
     ];
 
     List<String> values = [
-      'Nana Agyeman Akosua',
+      'Nana Agyeman',
       '6 May 1987',
       'KNUST',
       '+233 24 000 0000',

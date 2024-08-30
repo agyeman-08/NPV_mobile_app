@@ -143,22 +143,34 @@ class HelpAndFeedbackScreen extends StatelessWidget {
               const SizedBox(height: 20),
               // Feedback Input
               Container(
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.grey[200],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: TextField(
-                  maxLines: 6,
-                  decoration: InputDecoration.collapsed(
-                    hintText: 'Tell us what you think',
-                    hintStyle: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                    fillColor: Theme.of(context).colorScheme.surface,
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.blueAccent[200],
+                    borderRadius: BorderRadius.circular(8),
                   ),
-                ),
-              ),
+                  child: Container(
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(
+                            8.0), // Optional: for rounded corners
+                      ),
+                      child: TextField(
+                        maxLines: 6,
+                        decoration: InputDecoration(
+                          hintText: 'Tell us what you think',
+                          hintStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.primary,
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(
+                                8.0), // Optional: for rounded corners
+                          ),
+                          contentPadding:
+                              EdgeInsets.all(16.0), // Adjust padding as needed
+                          filled: true,
+                          fillColor: Theme.of(context).colorScheme.surface,
+                        ),
+                      ))),
               const SizedBox(height: 20),
               // Submit Button
               Center(

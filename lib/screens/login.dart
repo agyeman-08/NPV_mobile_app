@@ -17,9 +17,9 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   bool isLoading = false;
   final TextEditingController emailController = TextEditingController();
-
   final TextEditingController passwordController = TextEditingController();
   final Authentication authentication = Authentication();
+
   login({required BuildContext ctx}) async {
     if (passwordController.text.trim().isNotEmpty &&
         emailController.text.trim().isNotEmpty) {
@@ -29,7 +29,6 @@ class _LoginPageState extends State<LoginPage> {
         });
         final response = await authentication.loginUser(
             passwordController.text.trim(), emailController.text.trim());
-        // print(response);
         if (response) {
           Navigator.push(
               ctx, MaterialPageRoute(builder: (ctx) => const HomePage()));
@@ -43,7 +42,7 @@ class _LoginPageState extends State<LoginPage> {
         });
       }
     } else {
-      Fluttertoast.showToast(msg: "Please fill all feilds");
+      Fluttertoast.showToast(msg: "Please fill all fields");
     }
   }
 
@@ -64,73 +63,77 @@ class _LoginPageState extends State<LoginPage> {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 50), // Space from top
-                    Text(
-                      'Welcome Back!',
-                      style: TextStyle(
-                        fontSize: 32,
-                        fontWeight: FontWeight.bold,
-                        color: Theme.of(context).colorScheme.secondary,
+                child: GestureDetector(
+                  onTap: () => FocusScope.of(context)
+                      .unfocus(), // Dismiss keyboard on tap
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(height: 50), // Space from top
+                      Text(
+                        'Welcome Back!',
+                        style: TextStyle(
+                          fontSize: 32,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.secondary,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      'Login to your account',
-                      style: TextStyle(
-                        fontSize: 18,
-                        color: Colors.black54,
+                      const SizedBox(height: 10),
+                      Text(
+                        'Login to your account',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Colors.white,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 50),
-                    CustomTextField(
-                      icon: const Icon(Icons.email),
-                      controller: emailController,
-                      hintText: 'Email',
-                    ),
-                    const SizedBox(height: 20),
-                    CustomTextField(
-                      icon: const Icon(Icons.lock),
-                      controller: passwordController,
-                      hintText: 'Password',
-                      isPass: true,
-                    ),
-                    const SizedBox(height: 40),
-                    CustomElevatedButton(
-                      onPressed: () => login(ctx: context),
-                      // Add login logic here
-
-                      label: isLoading ? "Loading....." : 'Login',
-                      width: double.infinity,
-                      height: 50,
-                      backgroundColor: Colors.transparent,
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text("Don’t have an account?",
-                            style: TextStyle(color: Colors.white)),
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const SignUpPage()),
-                            );
-                          },
-                          child: Text(
-                            'Sign Up',
-                            style: TextStyle(
-                              color: Theme.of(context).colorScheme.secondary,
+                      const SizedBox(height: 50),
+                      CustomTextField(
+                        icon: const Icon(Icons.email),
+                        controller: emailController,
+                        hintText: 'Email',
+                      ),
+                      const SizedBox(height: 20),
+                      CustomTextField(
+                        icon: const Icon(Icons.lock),
+                        controller: passwordController,
+                        hintText: 'Password',
+                        isPass: true,
+                      ),
+                      const SizedBox(height: 40),
+                      CustomElevatedButton(
+                        onPressed: () => login(ctx: context),
+                        label: isLoading ? "Loading....." : 'Login',
+                        width: double.infinity,
+                        height: 50,
+                        backgroundColor:
+                            Colors.green, // Set button color to green
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text("Don’t have an account?",
+                              style: TextStyle(color: Colors.white)),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => const SignUpPage()),
+                              );
+                            },
+                            child: Text(
+                              'Sign Up',
+                              style: TextStyle(
+                                color: Theme.of(context).colorScheme.secondary,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),

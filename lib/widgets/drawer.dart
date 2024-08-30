@@ -346,7 +346,7 @@ class _SideDrawerState extends State<SideDrawer> {
                             color: Colors.blue,
                             size: 30,
                           ),
-                          Text("Logout(Nana Agyiman)"),
+                          Text("Logout(Nana Agyeman)"),
                         ],
                       ))
                 ],

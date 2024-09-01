@@ -22,16 +22,20 @@ class _LicenseDetailsScreenState extends State<LicenseDetailsScreen> {
   }
 
   /// Fetch license details from Firestore
-  /// Fetch license details from Firestore
   Future<void> _fetchLicenseDetails() async {
     try {
       // Clean the plate number by removing spaces or other characters
-      String cleanedPlateNum =
-          widget.plateNum.replaceAll(RegExp(r'[^0-9-]'), '');
+      String cleanedPlateNum = _cleanPlateNumber(widget.plateNum);
 
-      final querySnapshot = await _firestore
-          .collection('Number Plate ')
-          .where('Plate Number', isEqualTo: cleanedPlateNum)
+      final collection = _firestore.collection('Number Plate ');
+      final mydata = await collection.get();
+      for (var doc in mydata.docs) {
+        print('Document ID: ${doc.id}');
+        print('Document Data: ${doc.data()}');
+      }
+      // Fetch documents where the 'Plate Number' exactly matches the cleanedPlateNum
+      final querySnapshot = await collection
+          .where('Plate Number', isEqualTo: widget.plateNum)
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
@@ -41,6 +45,7 @@ class _LicenseDetailsScreenState extends State<LicenseDetailsScreen> {
         });
       } else {
         setState(() {
+          licenseData = null; // No details found
           isLoading = false;
         });
       }
@@ -52,8 +57,23 @@ class _LicenseDetailsScreenState extends State<LicenseDetailsScreen> {
     }
   }
 
+  /// Helper function to check if the plate number format is valid
+  bool _isValidPlateNumberFormat(String plateNumber) {
+    // Regular expression to match the format (e.g., AB1234-12)
+    RegExp regex = RegExp(r'^[A-Z]{2}\d{4}-\d{2}$');
+    return regex.hasMatch(plateNumber);
+  }
+
+  /// Clean the plate number input by removing unwanted characters and formatting it
+  String _cleanPlateNumber(String plateNum) {
+    return plateNum.replaceAll(RegExp(r'[^A-Z0-9-]'), '').toUpperCase();
+  }
+
   @override
   Widget build(BuildContext context) {
+    // Cleaned plate number for display
+    String cleanedPlateNum = _cleanPlateNumber(widget.plateNum);
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('License Details'),
@@ -67,6 +87,7 @@ class _LicenseDetailsScreenState extends State<LicenseDetailsScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text('Plate Number: $cleanedPlateNum'),
                       Text('Name: ${licenseData!['Name']}'),
                       Text('Date of Birth: ${licenseData!['Date of Birth']}'),
                       Text('Address: ${licenseData!['Address']}'),

@@ -63,14 +63,14 @@ class HelpAndFeedbackScreen extends StatelessWidget {
                       MaterialPageRoute(builder: (context) => AboutApp()));
                 },
               ),
-              ListTile(
-                contentPadding: EdgeInsets.zero,
-                title: Text('Where is my data stored?'),
-                trailing: Icon(Icons.arrow_forward_ios, size: 16),
-                onTap: () {
-                  // Handle FAQ item tap
-                },
-              ),
+              // ListTile(
+              //   contentPadding: EdgeInsets.zero,
+              //   title: Text('Where is my data stored?'),
+              //   trailing: Icon(Icons.arrow_forward_ios, size: 16),
+              //   onTap: () {
+              //     // Handle FAQ item tap
+              //   },
+              // ),
               SizedBox(height: 20),
               // Contact Support Section
               Text(
